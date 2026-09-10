@@ -10,7 +10,7 @@ type StatBandProps = {
 export default function StatBand({ stats = [] }: StatBandProps) {
   return (
     <div className="bg-ink">
-      <div className="mx-auto box-border grid max-w-[1200px] grid-cols-1 md:grid-cols-4">
+      <div className="box-border grid grid-cols-1 px-6 md:grid-cols-4 md:px-10 lg:px-16 xl:px-20">
         {stats.map((stat, index) => (
           <div
             key={`${stat.label}-${index}`}

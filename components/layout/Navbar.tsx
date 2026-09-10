@@ -23,7 +23,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink/10 bg-white">
-      <div className="mx-auto box-border flex max-w-[1200px] items-center justify-between gap-4 px-6 py-4">
+      <div className="box-border flex items-center justify-between gap-4 px-6 py-4 md:px-10 lg:px-16 xl:px-20">
         <Link
           href="/"
           aria-label="ANUGATO AI BHARAT home"
@@ -32,12 +32,12 @@ export default function Navbar() {
           <span className="flex h-7 w-7 items-center justify-center rounded-sm bg-ink text-sm font-semibold text-white">
             ✓
           </span>
-          <span className="font-display text-[22px] tracking-[0.01em] text-ink">
+          <span className="whitespace-nowrap font-display text-base tracking-[0.01em] text-ink sm:text-[22px]">
             ANUGATO AI BHARAT
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-8 lg:flex">
           {navItems.map(({ label, to }) => {
             const isActive = pathname === to
             return (
@@ -50,14 +50,14 @@ export default function Navbar() {
               >
                 {label}
                 {isActive ? (
-                  <span className="absolute inset-x-0 -bottom-1.5 block h-0.5 bg-ink" />
+                  <span className="absolute inset-x-0 -bottom-1.5 block h-0.5 bg-verified" />
                 ) : null}
               </Link>
             )
           })}
         </nav>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           <Link
             href="/contact"
             className="text-sm text-muted no-underline transition-colors hover:text-ink"
@@ -77,15 +77,15 @@ export default function Navbar() {
           aria-label="Toggle navigation"
           aria-expanded={open}
           onClick={() => setOpen((value) => !value)}
-          className={`box-border inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink/10 bg-transparent text-ink transition-colors md:hidden ${focusRingClasses}`}
+          className={`box-border inline-flex h-10 w-10 items-center justify-center rounded-full border border-ink/10 bg-transparent text-ink transition-colors lg:hidden ${focusRingClasses}`}
         >
           {open ? <X size={18} /> : <Menu size={18} />}
         </button>
       </div>
 
       {open ? (
-        <div className="border-t border-ink/10 bg-white md:hidden">
-          <div className="mx-auto box-border flex max-w-[1200px] flex-col gap-3 px-6 py-5">
+        <div className="border-t border-ink/10 bg-white lg:hidden">
+          <div className="box-border flex flex-col gap-3 px-6 py-5 md:px-10 lg:px-16 xl:px-20">
             {navItems.map(({ label, to }) => {
               const isActive = pathname === to
               return (

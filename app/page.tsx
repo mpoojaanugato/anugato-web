@@ -1,100 +1,115 @@
-'use client'
-
-import { useState } from 'react'
-import Button from '@/components/ui/Button'
-import Card from '@/components/ui/Card'
 import Container from '@/components/ui/Container'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import Eyebrow from '@/components/ui/Eyebrow'
-import PillGroup from '@/components/ui/PillGroup'
-import StatChip from '@/components/ui/StatChip'
 import StatBand from '@/components/ui/StatBand'
 import CTABand from '@/components/ui/CTABand'
-import NoteCallout from '@/components/ui/NoteCallout'
-import ScopeRow from '@/components/ui/ScopeRow'
+import Hero from '@/components/home/Hero'
+import ProcessSteps from '@/components/home/ProcessSteps'
+import TemplateGrid from '@/components/home/TemplateGrid'
+import FeatureGrid from '@/components/home/FeatureGrid'
+import IntegrationsList from '@/components/home/IntegrationsList'
+import { createSupabasePublicClient } from '@/lib/supabase/public'
 
-const pillOptions = ['ISO', 'IT', 'Internal']
+async function getDashboardShowcase() {
+  const supabase = createSupabasePublicClient()
 
-export default function DesignSystemShowcase() {
-  const [pillValue, setPillValue] = useState(pillOptions[0])
+  const [{ data: stats }, { data: rows }] = await Promise.all([
+    supabase
+      .from('dashboard_showcase_stats')
+      .select('value, label')
+      .order('sort_order', { ascending: true }),
+    supabase
+      .from('dashboard_showcase_rows')
+      .select('label, percent, tone')
+      .order('sort_order', { ascending: true })
+  ])
+
+  return {
+    stats: stats && stats.length > 0 ? stats : undefined,
+    rows: rows && rows.length > 0 ? rows : undefined
+  }
+}
+
+export default async function Home() {
+  const { stats: dashboardStats, rows: dashboardRows } = await getDashboardShowcase()
 
   return (
-    <Section>
-      <Container>
-        <Eyebrow leadingDash>Design system showcase — Day 1</Eyebrow>
-        <div className="mt-4">
+    <>
+      <Section>
+        <Hero dashboardStats={dashboardStats} dashboardRows={dashboardRows} />
+      </Section>
+
+      <StatBand
+        stats={[
+          { value: '40+', label: 'Organisations on ANUGATO AI BHARAT' },
+          { value: '12', label: 'Audit types supported' },
+          { value: '98%', label: 'Report turnaround SLA met' },
+          { value: '6 yrs', label: 'Built by practising auditors' }
+        ]}
+      />
+
+      <Section bg="white">
+        <Container>
           <SectionHeading
-            title="Every ported primitive, one screen"
-            intro="Temporary verification page — not a real route. Deleted once real pages land."
+            title="An end-to-end solution, not a checklist app."
+            intro="ANUGATO AI BHARAT digitises the complete audit lifecycle — from the annual plan to the last follow-up — so nothing depends on a spreadsheet or a status call."
           />
-        </div>
+          <div className="mt-10">
+            <ProcessSteps />
+          </div>
+        </Container>
+      </Section>
 
-        <div className="mt-10 flex flex-wrap items-center gap-3">
-          <Button to="/">Primary (link)</Button>
-          <Button variant="secondary" onClick={() => console.log('secondary clicked')}>
-            Secondary (onClick)
-          </Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="white" className="border border-ink/10">
-            White
-          </Button>
-        </div>
-
-        <div className="mt-10">
-          <PillGroup options={pillOptions} value={pillValue} onChange={setPillValue} />
-        </div>
-
-        <div className="mt-10 flex flex-wrap gap-4">
-          <StatChip>40+ organisations onboarded</StatChip>
-        </div>
-
-        <div className="mt-10">
-          <Card>
-            <NoteCallout label="Note">
-              Cards and callouts share the same border and spacing tokens.
-            </NoteCallout>
-          </Card>
-        </div>
-
-        <div className="mt-10">
-          <ScopeRow
-            item={{
-              key: '01',
-              title: 'ISO 9001 audit',
-              description: 'Quality management scope.',
-              status: 'Live'
-            }}
+      <Section bg="paper">
+        <Container>
+          <SectionHeading
+            title="Customisable templates for every audit department."
+            intro="Run distinct, isolated audit environments side by side — each with its own templates, scoring and workflows."
           />
-          <ScopeRow
-            item={{
-              key: '02',
-              title: 'ISO 27001 audit',
-              description: 'Information security scope.',
-              status: 'Roadmap'
-            }}
+          <div className="mt-10">
+            <TemplateGrid />
+          </div>
+        </Container>
+      </Section>
+
+      <Section bg="white">
+        <Container>
+          <SectionHeading
+            title="Built for consulting firms and in-house audit teams alike."
+            intro="The features that matter, whether you run one audit department or manage dozens of client engagements."
           />
-        </div>
-      </Container>
+          <div className="mt-10">
+            <FeatureGrid />
+          </div>
+        </Container>
+      </Section>
 
-      <div className="mt-16">
-        <StatBand
-          stats={[
-            { value: '40+', label: 'Organisations on ANUGATO AI BHARAT' },
-            { value: '12', label: 'Audit types supported' },
-            { value: '98%', label: 'Report turnaround SLA met' },
-            { value: '6 yrs', label: 'Built by practising auditors' }
-          ]}
-        />
-      </div>
+      <Section bg="paper">
+        <Container>
+          <Eyebrow leadingDash color="green">
+            Integrations &amp; extensibility
+          </Eyebrow>
+          <div className="mt-4">
+            <SectionHeading
+              title="Built to sit inside your existing stack."
+              intro="The revamp is scoped so these connect natively — no separate dev cycle required later."
+            />
+          </div>
+          <div className="mt-10">
+            <IntegrationsList />
+          </div>
+        </Container>
+      </Section>
 
-      <div className="mt-16">
-        <CTABand
-          title="Every primitive checks out."
-          description="This page is temporary — real pages land Day 2 onward."
-          buttons={[{ label: 'Book a demo', to: '/contact' }]}
-        />
-      </div>
-    </Section>
+      <CTABand
+        title="Ready to take control of your audits?"
+        description="See ANUGATO AI BHARAT configured for your own audit types, templates and reporting needs in a 30-minute walkthrough."
+        buttons={[
+          { label: 'Book a demo', to: '/contact', white: true },
+          { label: 'Talk to sales', to: '/contact', variant: 'outline' }
+        ]}
+      />
+    </>
   )
 }

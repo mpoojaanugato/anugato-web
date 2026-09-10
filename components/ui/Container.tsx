@@ -9,14 +9,14 @@ type ContainerProps = {
 
 export default function Container({
   children,
-  maxWidth = '1200px',
+  maxWidth,
   center = false,
   className = ''
 }: ContainerProps) {
   return (
     <div
-      className={`mx-auto box-border w-full px-6 ${center ? 'text-center' : ''} ${className}`}
-      style={{ maxWidth }}
+      className={`box-border w-full px-6 md:px-10 lg:px-16 xl:px-20 ${center ? 'text-center' : ''} ${className}`}
+      style={maxWidth ? { maxWidth } : undefined}
     >
       {children}
     </div>

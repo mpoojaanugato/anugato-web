@@ -8,9 +8,15 @@ type PillGroupProps = {
   options?: string[]
   value?: string
   onChange: (option: string) => void
+  ariaLabel?: string
 }
 
-export default function PillGroup({ options = [], value, onChange }: PillGroupProps) {
+export default function PillGroup({
+  options = [],
+  value,
+  onChange,
+  ariaLabel = 'Feature categories'
+}: PillGroupProps) {
   const buttonsRef = useRef<(HTMLButtonElement | null)[]>([])
 
   const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, currentIndex: number) => {
@@ -24,7 +30,7 @@ export default function PillGroup({ options = [], value, onChange }: PillGroupPr
   }
 
   return (
-    <div role="tablist" aria-label="Feature categories" className="flex flex-wrap gap-3">
+    <div role="tablist" aria-label={ariaLabel} className="flex flex-wrap gap-3">
       {options.map((option, index) => (
         <Pill
           key={option}
