@@ -1,38 +1,63 @@
 # anugato-web
-anugato-web/
-├── app/
-│   ├── page.tsx                  # Home
-│   ├── features/page.tsx
-│   ├── pricing/page.tsx
-│   ├── about/page.tsx
-│   ├── contact/page.tsx
-│   ├── resources/
-│   │   ├── page.tsx               # Blog listing
-│   │   └── [slug]/page.tsx        # Blog post detail
-│   ├── admin/
-│   │   ├── login/page.tsx
-│   │   └── posts/page.tsx         # Minimal CMS, Supabase-auth protected
-│   ├── api/
-│   │   ├── lead/route.ts          # POST — contact/demo form
-│   │   └── newsletter/route.ts    # POST — newsletter signup
-│   ├── sitemap.ts                 # Auto-generated sitemap
-│   ├── robots.ts
-│   └── layout.tsx                 # Header, Footer, GTM script
-├── components/
-│   ├── ui/                        # Button, Card, Input, Badge, Pill
-│   ├── layout/                    # Header, Footer, Nav
-│   ├── sections/                  # Hero, StatsBand, ProcessRail, FeatureGrid,
-│   │                               #   TemplatesGrid, IntegrationsStrip, CtaBand
-│   └── forms/                     # ContactForm, NewsletterForm
-├── lib/
-│   ├── supabase/
-│   │   ├── client.ts               # browser client (anon key)
-│   │   └── server.ts               # server client (service role, server-only)
-│   ├── analytics.ts                 # GA4 event helper (trackEvent)
-│   └── validation.ts                # zod schemas for form input
-├── styles/
-│   └── tokens.css                   # design tokens as CSS variables
-├── public/
-├── .env.example
-└── next.config.js
+
+Next.js frontend for ANUGATO AI BHARAT. The web app owns the UI and calls the
+`anugato-integrations` FastAPI service; it does not connect to Supabase or the
+database directly.
+
+## Local setup
+
+After cloning the repository:
+
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+The local `.env.local` file is intentionally ignored by Git. It must contain:
+
+```env
+BACKEND_SERVICE_URL=http://127.0.0.1:8000
+```
+
+Set `BACKEND_SERVICE_TOKEN` as well if the backend is configured to require
+service-to-service authentication. Never add secrets to `.env.example` or
+commit `.env.local`.
+
+## Backend dependency
+
+Start `anugato-integrations` before opening the home page:
+
+```bash
+cd ../anugato-integrations
+.venv/bin/uvicorn app.main:app --reload
+```
+
+The frontend expects these backend endpoints:
+
+- `GET /health`
+- `GET /dashboard/showcase`
+- `POST /leads`
+- `POST /newsletter/subscribers`
+
+## Scripts
+
+```bash
+npm run dev       # Start local development
+npm run lint      # Run ESLint
+npm run build     # Create a production build
+npm run start     # Serve the production build
+```
+
+## Ignored local files
+
+These files are recreated after cloning and must not be committed:
+
+- `.env.local` for local backend configuration
+- `node_modules/` for installed npm dependencies
+- `.next/` and `out/` for Next.js build output
+- TypeScript and package-manager caches/logs
+
+The committed `.env.example` file is the safe configuration template.
