@@ -28,16 +28,22 @@ export default function Navbar() {
         <Link
           href="/"
           aria-label="ANUGATO AI BHARAT home"
-          className="flex h-12 w-[150px] items-center no-underline"
+          className="flex min-w-0 items-center gap-2 no-underline"
         >
           <Image
             src="/anugato-logo.png"
-            alt="ANUGATO AI BHARAT"
-            width={150}
-            height={150}
-            className="h-full w-full object-contain object-left"
+            alt=""
+            width={48}
+            height={48}
+            className="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12"
             priority
           />
+          <span className="min-w-0 font-display text-[13px] leading-[1.05] tracking-[0.01em] text-ink sm:text-[18px]">
+            <span className="block">ANUGATO</span>
+            <span className="block text-[9px] tracking-[0.24em] text-verified sm:text-[11px]">
+              AI BHARAT
+            </span>
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">

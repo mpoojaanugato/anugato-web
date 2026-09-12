@@ -12,14 +12,18 @@ export default function Footer() {
       <div className="box-border px-6 py-12 md:px-10 lg:px-16 xl:px-20">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.3fr)]">
           <div>
-            <div className="h-24 w-[190px]">
+            <div className="flex items-center gap-3">
               <Image
                 src="/anugato-logo.png"
-                alt="ANUGATO AI BHARAT"
-                width={190}
-                height={190}
-                className="h-full w-full object-contain object-left"
+                alt=""
+                width={64}
+                height={64}
+                className="h-14 w-14 shrink-0 object-contain"
               />
+              <span className="font-display text-[22px] leading-[1.05] tracking-[0.01em] text-ink">
+                <span className="block">ANUGATO</span>
+                <span className="block text-[11px] tracking-[0.24em] text-verified">AI BHARAT</span>
+              </span>
             </div>
             <p className="m-0 mt-5 max-w-[300px] text-base leading-[1.75] text-muted">
               Transform auditing with smart audit management software, by ANUGATO AI BHARAT.
