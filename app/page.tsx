@@ -7,19 +7,27 @@ import Hero from '@/components/home/Hero'
 import ProcessSteps from '@/components/home/ProcessSteps'
 import TemplateGrid from '@/components/home/TemplateGrid'
 import FeatureGrid from '@/components/home/FeatureGrid'
-import { requestBackend } from '@/lib/backend/client'
+import { BackendRequestError, requestBackend } from '@/lib/backend/client'
 
 export const dynamic = 'force-dynamic'
 
 async function getDashboardShowcase() {
-  const result = await requestBackend<{
-    stats: { value: string; label: string }[]
-    rows: { label: string; percent: number; tone: 'verified' | 'flag' | 'muted' }[]
-  }>('/dashboard/showcase', { revalidate: 60 })
+  try {
+    const result = await requestBackend<{
+      stats: { value: string; label: string }[]
+      rows: { label: string; percent: number; tone: 'verified' | 'flag' | 'muted' }[]
+    }>('/dashboard/showcase', { revalidate: 60 })
 
-  return {
-    stats: result.stats.length > 0 ? result.stats : undefined,
-    rows: result.rows.length > 0 ? result.rows : undefined
+    return {
+      stats: result.stats.length > 0 ? result.stats : undefined,
+      rows: result.rows.length > 0 ? result.rows : undefined
+    }
+  } catch (error) {
+    if (error instanceof BackendRequestError) {
+      console.error(`Dashboard backend unavailable (${error.status})`)
+    }
+
+    return { stats: undefined, rows: undefined }
   }
 }
 
