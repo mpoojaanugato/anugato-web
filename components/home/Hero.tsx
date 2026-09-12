@@ -4,7 +4,7 @@ import Eyebrow from '@/components/ui/Eyebrow'
 import DashboardPreview from './DashboardPreview'
 import type { DashboardRow, DashboardStat } from './DashboardPreview'
 
-const trustedBy = ['Nirlon', 'Kalpataru', 'Greenply', 'Emcure', '+40 more']
+const trustedBy = ['KGS', 'Kubera', '+10 more']
 
 type HeroProps = {
   dashboardStats?: DashboardStat[]
@@ -37,7 +37,7 @@ export default function Hero({ dashboardStats, dashboardRows }: HeroProps) {
           </div>
 
           <div className="mt-10 border-t border-ink/10 pt-6">
-            <Eyebrow color="muted">Trusted by audit &amp; compliance teams at</Eyebrow>
+            <Eyebrow color="muted">Trusted by CBs like</Eyebrow>
             <div className="mt-4 flex flex-wrap items-center gap-x-8 gap-y-3 text-base text-muted">
               {trustedBy.map((name) => (
                 <span key={name}>{name}</span>
