@@ -1,33 +1,25 @@
 import Container from '@/components/ui/Container'
 import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
-import Eyebrow from '@/components/ui/Eyebrow'
 import StatBand from '@/components/ui/StatBand'
 import CTABand from '@/components/ui/CTABand'
 import Hero from '@/components/home/Hero'
 import ProcessSteps from '@/components/home/ProcessSteps'
 import TemplateGrid from '@/components/home/TemplateGrid'
 import FeatureGrid from '@/components/home/FeatureGrid'
-import IntegrationsList from '@/components/home/IntegrationsList'
-import { createSupabasePublicClient } from '@/lib/supabase/public'
+import { requestBackend } from '@/lib/backend/client'
+
+export const dynamic = 'force-dynamic'
 
 async function getDashboardShowcase() {
-  const supabase = createSupabasePublicClient()
-
-  const [{ data: stats }, { data: rows }] = await Promise.all([
-    supabase
-      .from('dashboard_showcase_stats')
-      .select('value, label')
-      .order('sort_order', { ascending: true }),
-    supabase
-      .from('dashboard_showcase_rows')
-      .select('label, percent, tone')
-      .order('sort_order', { ascending: true })
-  ])
+  const result = await requestBackend<{
+    stats: { value: string; label: string }[]
+    rows: { label: string; percent: number; tone: 'verified' | 'flag' | 'muted' }[]
+  }>('/dashboard/showcase', { revalidate: 60 })
 
   return {
-    stats: stats && stats.length > 0 ? stats : undefined,
-    rows: rows && rows.length > 0 ? rows : undefined
+    stats: result.stats.length > 0 ? result.stats : undefined,
+    rows: result.rows.length > 0 ? result.rows : undefined
   }
 }
 
@@ -81,23 +73,6 @@ export default async function Home() {
           />
           <div className="mt-10">
             <FeatureGrid />
-          </div>
-        </Container>
-      </Section>
-
-      <Section bg="paper">
-        <Container>
-          <Eyebrow leadingDash color="green">
-            Integrations &amp; extensibility
-          </Eyebrow>
-          <div className="mt-4">
-            <SectionHeading
-              title="Built to sit inside your existing stack."
-              intro="The revamp is scoped so these connect natively — no separate dev cycle required later."
-            />
-          </div>
-          <div className="mt-10">
-            <IntegrationsList />
           </div>
         </Container>
       </Section>
