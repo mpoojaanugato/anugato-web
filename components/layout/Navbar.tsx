@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 
 const navItems = [
@@ -27,14 +28,16 @@ export default function Navbar() {
         <Link
           href="/"
           aria-label="ANUGATO AI BHARAT home"
-          className="flex items-center gap-3 no-underline"
+          className="flex h-12 w-[150px] items-center no-underline"
         >
-          <span className="flex h-7 w-7 items-center justify-center rounded-sm bg-ink text-sm font-semibold text-white">
-            ✓
-          </span>
-          <span className="whitespace-nowrap font-display text-base tracking-[0.01em] text-ink sm:text-[22px]">
-            ANUGATO AI BHARAT
-          </span>
+          <Image
+            src="/anugato-logo.png"
+            alt="ANUGATO AI BHARAT"
+            width={150}
+            height={150}
+            className="h-full w-full object-contain object-left"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
