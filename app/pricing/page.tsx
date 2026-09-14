@@ -3,10 +3,29 @@ import Section from '@/components/ui/Section'
 import SectionHeading from '@/components/ui/SectionHeading'
 import Eyebrow from '@/components/ui/Eyebrow'
 import NoteCallout from '@/components/ui/NoteCallout'
-import PricingTable from '@/components/pricing/PricingTable'
-import FAQGrid from '@/components/pricing/FAQGrid'
+import PricingTable, { fallbackPlans, type Plan } from '@/components/pricing/PricingTable'
+import FAQGrid, { fallbackFaqs, type PricingFaq } from '@/components/pricing/FAQGrid'
+import { BackendRequestError, requestBackend } from '@/lib/backend/client'
 
-export default function PricingPage() {
+export const revalidate = 60
+
+async function getPricing() {
+  try {
+    return await requestBackend<{ plans: Plan[]; faqs: PricingFaq[] }>('/pricing', {
+      revalidate: 60
+    })
+  } catch (error) {
+    if (error instanceof BackendRequestError) {
+      console.error(`Pricing backend unavailable (${error.status})`)
+    }
+
+    return { plans: fallbackPlans, faqs: fallbackFaqs }
+  }
+}
+
+export default async function PricingPage() {
+  const { plans, faqs } = await getPricing()
+
   return (
     <>
       <Section>
@@ -26,12 +45,12 @@ export default function PricingPage() {
 
       <Section bg="white" className="pt-0">
         <Container>
-          <PricingTable />
+          <PricingTable plans={plans} />
           <div className="mt-8">
             <NoteCallout label="Note" tone="flag">
-              ANUGATO AI BHARAT is enterprise software; keep pricing consultative (&quot;Talk to
-              sales&quot;) rather than self-serve checkout unless the business decides otherwise.
-              Table above is a wireframe placeholder for real tiering.
+              ANUGATO AI BHARAT is enterprise software; pricing is consultative rather than
+              self-serve checkout. Talk to sales and we&apos;ll configure the right tier for your
+              audit teams.
             </NoteCallout>
           </div>
         </Container>
@@ -41,7 +60,7 @@ export default function PricingPage() {
         <Container>
           <SectionHeading title="Frequently asked." />
           <div className="mt-10">
-            <FAQGrid />
+            <FAQGrid faqs={faqs} />
           </div>
         </Container>
       </Section>

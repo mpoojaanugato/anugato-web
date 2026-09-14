@@ -39,6 +39,7 @@ The frontend expects these backend endpoints:
 
 - `GET /health`
 - `GET /dashboard/showcase`
+- `GET /pricing`
 - `POST /leads`
 - `POST /newsletter/subscribers`
 

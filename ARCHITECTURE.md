@@ -48,6 +48,7 @@ supabase/migrations/               Database schema owned by the backend
 
 - `GET /health` checks backend availability.
 - `GET /dashboard/showcase` returns public dashboard preview data.
+- `GET /pricing` returns ordered pricing plans and FAQs from the backend database.
 - `POST /leads` persists a validated contact/demo request.
 - `POST /newsletter/subscribers` upserts a validated subscriber.
 

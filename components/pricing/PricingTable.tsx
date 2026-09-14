@@ -1,20 +1,21 @@
-import { IndianRupee } from 'lucide-react'
 import Button from '@/components/ui/Button'
 
-type Plan = {
+export type Plan = {
   label: string
   description: string
+  price_label: string
   features: string[]
-  cta: { label: string; to: string }
-  highlighted?: boolean
-  badge?: string
-  custom?: boolean
+  cta_label: string
+  cta_path: string
+  highlighted: boolean
+  badge: string | null
 }
 
-const plans: Plan[] = [
+export const fallbackPlans: Plan[] = [
   {
     label: 'Starter',
     description: 'Single department, up to 10 users',
+    price_label: 'Custom',
     features: [
       '1 audit department',
       'Customisable templates',
@@ -22,11 +23,15 @@ const plans: Plan[] = [
       'Standard Word / Excel reports',
       'Email support'
     ],
-    cta: { label: 'Talk to sales', to: '/contact' }
+    cta_label: 'Talk to sales',
+    cta_path: '/contact',
+    highlighted: false,
+    badge: null
   },
   {
     label: 'Professional',
     description: 'Multi-department, up to 50 users',
+    price_label: 'Custom',
     features: [
       'Unlimited audit departments',
       'Risk-based audit matrix',
@@ -35,13 +40,15 @@ const plans: Plan[] = [
       'Role-based access controls',
       'Priority support'
     ],
-    cta: { label: 'Book a demo', to: '/contact' },
+    cta_label: 'Book a demo',
+    cta_path: '/contact',
     highlighted: true,
     badge: 'Most chosen'
   },
   {
     label: 'Enterprise',
     description: 'Unlimited users, dedicated environment',
+    price_label: 'Custom',
     features: [
       'Everything in Professional',
       'Data-isolated department environments',
@@ -49,12 +56,18 @@ const plans: Plan[] = [
       'Dedicated onboarding & SLA',
       'Consulting-firm multi-client mode'
     ],
-    cta: { label: 'Contact sales', to: '/contact' },
-    custom: true
+    cta_label: 'Contact sales',
+    cta_path: '/contact',
+    highlighted: false,
+    badge: null
   }
 ]
 
-export default function PricingTable() {
+type PricingTableProps = {
+  plans?: Plan[]
+}
+
+export default function PricingTable({ plans = fallbackPlans }: PricingTableProps) {
   return (
     <div className="box-border grid grid-cols-1 gap-6 md:grid-cols-3">
       {plans.map((plan) => (
@@ -78,14 +91,13 @@ export default function PricingTable() {
             {plan.label}
           </div>
 
-          {plan.custom ? (
-            <div className="mt-4 font-display text-4xl font-semibold text-ink">Custom</div>
-          ) : (
-            <div className="mt-4 flex items-center gap-1 font-display text-4xl font-semibold">
-              <IndianRupee size={28} strokeWidth={2.5} />
-              <span>—</span>
-            </div>
-          )}
+          <div
+            className={`mt-4 font-display text-4xl font-semibold ${
+              plan.highlighted ? 'text-white' : 'text-ink'
+            }`}
+          >
+            {plan.price_label}
+          </div>
 
           <p
             className={`m-0 mt-3 text-sm leading-[1.6] ${
@@ -114,11 +126,11 @@ export default function PricingTable() {
 
           <div className="mt-8">
             <Button
-              to={plan.cta.to}
+              to={plan.cta_path}
               variant={plan.highlighted ? 'white' : 'secondary'}
               className="w-full"
             >
-              {plan.cta.label}
+              {plan.cta_label}
             </Button>
           </div>
         </div>

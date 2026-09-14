@@ -1,4 +1,9 @@
-const faqs = [
+export type PricingFaq = {
+  question: string
+  answer: string
+}
+
+export const fallbackFaqs: PricingFaq[] = [
   {
     question: 'Can we run consulting-firm and in-house audits together?',
     answer: "Yes — each department's data stays isolated even on the same account."
@@ -25,7 +30,11 @@ const cellBorderClasses = [
   'md:border-b-0'
 ]
 
-export default function FAQGrid() {
+type FAQGridProps = {
+  faqs?: PricingFaq[]
+}
+
+export default function FAQGrid({ faqs = fallbackFaqs }: FAQGridProps) {
   return (
     <div className="box-border grid grid-cols-1 border border-ink bg-white md:grid-cols-2">
       {faqs.map((faq, index) => (
